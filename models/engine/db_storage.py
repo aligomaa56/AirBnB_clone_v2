@@ -2,13 +2,19 @@
 """db_storge class"""
 from os import getenv
 from models.base_model import Base
+from models.amenity import Amenity
+from models.place import Place, place_amenity
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.state import State
+from models.review import Review
 from models.city import City
 from models.user import User
 
-__objs = {"State": State, "City": City, 'User': User}
+
+__objs = {"State": State, "Amenity": Amenity,
+             "City": City, "Place": Place,
+             "Review": Review, "User": User}
 
 class DBStorage:
     """DBStorage class"""
@@ -58,8 +64,11 @@ class DBStorage:
         """relod from db"""
         from models.user import User
         from models.state import State
-        from models.city import City
+        from models.place import Place
+        from models.review import Review
         from models.base_model import BaseModel, Base
+        from models.city import City
+        from models.amenity import Amenity
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = Session()
