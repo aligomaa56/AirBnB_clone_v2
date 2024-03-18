@@ -2,20 +2,14 @@
 """This module defines a db_storge class"""
 from os import getenv
 from models.base_model import Base
-from models.amenity import Amenity
-from models.place import Place, place_amenity
 from models.state import State
-from models.review import Review
 from models.city import City
-from models.user import User
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 
-__classes = {"State": State, "Amenity": Amenity,
-             "City": City, "Place": Place,
-             "Review": Review, "User": User}
+__classes = {"State": State, "City": City}
 
 
 class DBStorage:
@@ -64,12 +58,8 @@ class DBStorage:
 
     def reload(self):
         """relod from db"""
-        from models.user import User
         from models.state import State
         from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-        from models.review import Review
         from models.base_model import BaseModel, Base
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
