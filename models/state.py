@@ -4,8 +4,6 @@ from sqlalchemy import Column, String, ForeignKey
 from sqlalchemy.orm import relationship
 from os import getenv
 from models.base_model import BaseModel, Base
-from models.city import City
-from models import storage
 
 class State(BaseModel, Base):
     """ State class """
@@ -16,6 +14,8 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Cities getter"""
+            from models.city import City
+            from models import storage
             _list = []
             for city in storage.all(City).values():
                 if city.state_id == self.id:
