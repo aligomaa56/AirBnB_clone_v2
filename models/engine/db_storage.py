@@ -55,6 +55,9 @@ class DBStorage:
 
     def reload(self):
         """relod from db"""
+        from models.state import State
+        from models.city import City
+        from models.base_model import BaseModel, Base
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = Session()
