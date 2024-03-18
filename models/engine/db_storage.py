@@ -1,16 +1,13 @@
 #!/usr/bin/python3
-"""This module defines a db_storge class"""
+"""db_storge class"""
 from os import getenv
 from models.base_model import Base
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.state import State
 from models.city import City
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-
-
-__classes = {"State": State, "City": City}
-
+__objs = {"State": State, "City": City}
 
 class DBStorage:
     """DBStorage class"""
@@ -24,25 +21,25 @@ class DBStorage:
                                                  getenv('HBNB_MYSQL_PWD'),
                                                  getenv('HBNB_MYSQL_HOST'),
                                                  getenv('HBNB_MYSQL_DB')),
-            pool_pre_ping=True)
+                                                pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """query on the current db"""
-        my_dict = {}
+        """all method"""
+        _dict = {}
         if cls is None:
-            for cl in __classes.values():
-                objs = self.__session.query(cl).all()
+            for obj in __objs.values():
+                objs = self.__session.query(obj).all()
                 for obj in objs:
                     key = obj.__class__.__name__ + '.' + obj.id
-                    my_dict[key] = obj
+                    _dict[key] = obj
         else:
             objs = self.__session.query(cls).all()
             for obj in objs:
                 key = obj.__class__.__name__ + '.' + obj.id
-                my_dict[key] = obj
-        return my_dict
+                _dict[key] = obj
+        return _dict
 
     def new(self, obj):
         """add the object to the current database"""
@@ -58,9 +55,6 @@ class DBStorage:
 
     def reload(self):
         """relod from db"""
-        from models.state import State
-        from models.city import City
-        from models.base_model import BaseModel, Base
         Base.metadata.create_all(self.__engine)
         Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
         self.__session = Session()
