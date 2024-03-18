@@ -6,8 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models.state import State
 from models.city import City
+from models.user import User
 
-__objs = {"State": State, "City": City}
+__objs = {"State": State, "City": City, 'User': User}
 
 class DBStorage:
     """DBStorage class"""
@@ -55,6 +56,7 @@ class DBStorage:
 
     def reload(self):
         """relod from db"""
+        from models.user import User
         from models.state import State
         from models.city import City
         from models.base_model import BaseModel, Base
