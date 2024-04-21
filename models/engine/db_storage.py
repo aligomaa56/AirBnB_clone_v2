@@ -13,8 +13,9 @@ from models.user import User
 
 
 __objs = {"State": State, "Amenity": Amenity,
-             "City": City, "Place": Place,
-             "Review": Review, "User": User}
+          "City": City, "Place": Place,
+          "Review": Review, "User": User}
+
 
 class DBStorage:
     """DBStorage class"""
@@ -28,7 +29,7 @@ class DBStorage:
                                                  getenv('HBNB_MYSQL_PWD'),
                                                  getenv('HBNB_MYSQL_HOST'),
                                                  getenv('HBNB_MYSQL_DB')),
-                                                pool_pre_ping=True)
+            pool_pre_ping=True)
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
